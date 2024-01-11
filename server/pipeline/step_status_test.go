@@ -21,6 +21,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"go.woodpecker-ci.org/woodpecker/v2/pipeline"
 	"go.woodpecker-ci.org/woodpecker/v2/pipeline/rpc"
 	"go.woodpecker-ci.org/woodpecker/v2/server/model"
 )
@@ -42,7 +43,7 @@ func TestUpdateStepStatusNotExited(t *testing.T) {
 		Exited:  false,
 		// Dummy data
 		Finished: int64(1),
-		ExitCode: 137,
+		ExitCode: pipeline.ExitCodeKilled,
 		Error:    "not an error",
 	}
 
@@ -66,7 +67,7 @@ func TestUpdateStepStatusNotExitedButStopped(t *testing.T) {
 		Exited: false,
 		// Dummy data
 		Finished: int64(1),
-		ExitCode: 137,
+		ExitCode: pipeline.ExitCodeKilled,
 		Error:    "not an error",
 	}
 
@@ -90,7 +91,7 @@ func TestUpdateStepStatusExited(t *testing.T) {
 		Started:  int64(42),
 		Exited:   true,
 		Finished: int64(34),
-		ExitCode: 137,
+		ExitCode: pipeline.ExitCodeKilled,
 		Error:    "an error",
 	}
 
@@ -99,7 +100,7 @@ func TestUpdateStepStatusExited(t *testing.T) {
 	assert.EqualValues(t, model.StatusKilled, step.State)
 	assert.EqualValues(t, 42, step.Started)
 	assert.EqualValues(t, 34, step.Stopped)
-	assert.EqualValues(t, 137, step.ExitCode)
+	assert.EqualValues(t, pipeline.ExitCodeKilled, step.ExitCode)
 	assert.EqualValues(t, "an error", step.Error)
 }
 
@@ -270,7 +271,7 @@ func TestUpdateStepToStatusKilledStarted(t *testing.T) {
 		t.Errorf("Step stopped not equals %d < %d", now, step.Stopped)
 	case step.Started != step.Stopped:
 		t.Errorf("Step started not equals %d != %d", step.Stopped, step.Started)
-	case step.ExitCode != 137:
+	case step.ExitCode != pipeline.ExitCodeKilled:
 		t.Errorf("Step exit code not equals 137 != %d", step.ExitCode)
 	}
 }

@@ -18,6 +18,7 @@ package pipeline
 import (
 	"time"
 
+	"go.woodpecker-ci.org/woodpecker/v2/pipeline"
 	"go.woodpecker-ci.org/woodpecker/v2/pipeline/rpc"
 	"go.woodpecker-ci.org/woodpecker/v2/server/model"
 )
@@ -31,7 +32,7 @@ func UpdateStepStatus(store model.UpdateStepStore, step *model.Step, state rpc.S
 		if state.ExitCode != 0 || state.Error != "" {
 			step.State = model.StatusFailure
 		}
-		if state.ExitCode == 137 {
+		if state.ExitCode == pipeline.ExitCodeKilled {
 			step.State = model.StatusKilled
 		}
 	} else if step.Stopped == 0 {
@@ -77,6 +78,6 @@ func UpdateStepToStatusKilled(store model.UpdateStepStore, step model.Step) (*mo
 	if step.Started == 0 {
 		step.Started = step.Stopped
 	}
-	step.ExitCode = 137
+	step.ExitCode = pipeline.ExitCodeKilled
 	return &step, store.StepUpdate(&step)
 }
