@@ -163,10 +163,8 @@ linters:
     - gocritic
     - nolintlint
     - stylecheck
-<<<<<<< HEAD:.golangci.yaml
     - contextcheck
     - forcetypeassert
-=======
     - gomnd
 
 issues:
@@ -174,7 +172,6 @@ issues:
     - path: 'cmd/agent/flags.go|cmd/server/flags.go|pipeline/backend/kubernetes/flags.go|_test.go'
       linters:
         - gomnd
->>>>>>> 5705bca74 (Enable golangci linter gomnd):.golangci.yml
 
 run:
   timeout: 15m
