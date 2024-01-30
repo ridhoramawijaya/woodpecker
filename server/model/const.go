@@ -27,7 +27,6 @@ const (
 	EventPull       WebhookEvent = "pull_request"
 	EventPullClosed WebhookEvent = "pull_request_closed"
 	EventTag        WebhookEvent = "tag"
-	EventRelease    WebhookEvent = "release"
 	EventDeploy     WebhookEvent = "deployment"
 	EventCron       WebhookEvent = "cron"
 	EventManual     WebhookEvent = "manual"
@@ -41,9 +40,9 @@ func (wel WebhookEventList) Less(i, j int) bool { return wel[i] < wel[j] }
 
 var ErrInvalidWebhookEvent = errors.New("invalid webhook event")
 
-func (s WebhookEvent) Validate() error {
+func ValidateWebhookEvent(s WebhookEvent) error {
 	switch s {
-	case EventPush, EventPull, EventPullClosed, EventTag, EventRelease, EventDeploy, EventCron, EventManual:
+	case EventPush, EventPull, EventTag, EventDeploy, EventCron, EventManual:
 		return nil
 	default:
 		return fmt.Errorf("%w: %s", ErrInvalidWebhookEvent, s)

@@ -102,6 +102,5 @@ func secretCreate(c *cli.Context) error {
 var defaultSecretEvents = []string{
 	woodpecker.EventPush,
 	woodpecker.EventTag,
-	woodpecker.EventRelease,
 	woodpecker.EventDeploy,
 }

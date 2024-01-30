@@ -267,8 +267,7 @@
         "pr": "Pull Request",
         "deploy": "Deploy",
         "cron": "Cron",
-        "manual": "Manual",
-        "release": "Release"
+        "manual": "Manual"
       },
       "status": {
         "status": "Status: {status}",
